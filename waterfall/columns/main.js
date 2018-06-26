@@ -4,7 +4,7 @@ var $ = function() {
 	return document.querySelectorAll.apply(document, arguments);
 };
 
-var path = 'static/';
+var path = '../static/';
 var imgArr = [{
 	src: '1.jpg'
 },{
@@ -45,9 +45,12 @@ var imgArr = [{
 
 var waterFall = (function() {
 	var $wrap = $('#container')[0];
-	var colW = 200;
-	// var panelName = 'panel';
-	// var columnName = 'column';
+	var colW = $('#container > .panel')[0].clientWidth;
+
+	// todo
+	// 1、.panel模板解析
+	// 2、ajax获取图片数据
+	//
 
 	// 列的高度
 	var arrHeight = [];
@@ -67,6 +70,7 @@ var waterFall = (function() {
 			}
 		}
 	};
+
 	// 获得最大高度的列
 	var getMaxIndex = function() {
 		var minHeight = Math.max.apply(null, arrHeight);
@@ -97,23 +101,26 @@ var waterFall = (function() {
 		}
 	};
 
-	// 初始化图片单位panel
-	var initImage = function(arr) {
+	// 初始化元素 panel
+	var addPanel = function(arr) {
 		for (var i = arr.length - 1; i >= 0; i--) {
 			var img = document.createElement('img'),
     	panel = document.createElement('div');
 			img.src = path + arr[i].src;
    		panel.className = 'panel';
     	panel.appendChild(img);
+
+    	// 新增元素直接放置在容器中
    		$wrap.appendChild(panel);
 		}
 	};
 
-	// 排列panel
-	var arrangePanel = function() {
+	// 排列元素panel
+	var setPanel = function() {
 		$wrap.style.width = colW*columns() + 'px';
 		var cols = $('.column'),
-				panel = $('.panel');
+				panel = $('#container > .panel');
+		// 为容器中的元素分配column
 		for (var i = panel.length - 1; i >= 0; i--) {
 		    var index = getMinIndex();
 		    cols[index].appendChild(panel[i]);
@@ -121,7 +128,7 @@ var waterFall = (function() {
 		}
 	};
 
-
+	// 检查是否滚动到加载位置
 	function checkscrollside(){
     var index = getMaxIndex();
     var panel = $('.column')[index].getElementsByTagName('div');
@@ -135,52 +142,50 @@ var waterFall = (function() {
     return (lastPinH<scrollTop+documentH)?true:false;
 	}
 
-	var onload = function() {
-		// 图片预加载
-		preloadImg(imgArr);
+	var init = function() {
+		// 初始化
+		arrHeight = [];
+		$wrap.innerHTML = '';
+		$wrap.style.width = 'auto';
 
-		// 初始化元素
+		// 计算列数
 		initCol();
-		initImage(imgArr);
-
-
 	};
 
-	onload();
+	var reload = function() {
+	  // 储存元素
+		var panel = $('.panel');
+		init();
+		for (var i = panel.length - 1; i >= 0; i--) {
+			$wrap.appendChild(panel[i]);
+		}
+	};
 
-	// 特定事件下排列组合
+
+/* 页面初始化 =================================== */
+
+	init();
+	addPanel(imgArr);
+
+/* 事件绑定 =================================== */
+
+	// dom加载完毕后进行元素排列
 	window.onload = function() {
-		arrangePanel();
+		setPanel();
 	}
 
+	// 滚动到特定位置加载元素
 	window.onscroll = function() {
 		if(checkscrollside()){
-			initImage(imgArr);
-			arrangePanel();
+			addPanel(imgArr);
+			setPanel();
 		}
 	}
+
 	window.onresize = function() {
-		var done  = true;
-		if(done){
-			done = false;
-			// 清空高度
-			arrHeight = [];
-			var panel = $('.panel');
-			$wrap.innerHTML = '';
-			$wrap.style.width = 'auto';
-			initCol();
-			for (var i = panel.length - 1; i >= 0; i--) {
-				$wrap.appendChild(panel[i]);
-			}
-			arrangePanel();
-
-
-			setTimeout(function(){
-				done = true;
-			}, 1000);
-
-		}
-
+		reload();
+		setPanel();
 	}
+
 })();
 
