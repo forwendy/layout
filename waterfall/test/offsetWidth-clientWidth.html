@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+		<!--iphone-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no, email=no">
+		<!--iphone-->
+		<title>offsetWidth-clientWidth</title>
+		<style type="text/css">
+			#obj{
+				margin: 10px;
+				border: 10px solid #ddd;
+				padding: 10px;
+				width: 100px;
+				height: 100px;
+				box-shadow: 0 0 10px 10px #ff8a8a;
+				/* outline （轮廓）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。 */
+				/* 轮廓线不会占据空间，也不一定是矩形 */
+				outline: #b5ffbe dotted thick;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="obj">
+
+		</div>
+		<p>offsetWidth  = clientWidth + borderWidth</p>
+		<script type="text/javascript">
+		var $ = function() {
+        return document.querySelectorAll.apply(document, arguments);
+    }
+
+    console.log('clientWidth:'+ $('#obj')[0].clientWidth);
+    console.log('offsetWidth:'+ $('#obj')[0].offsetWidth);
+
+
+// 获取容器宽高（无border宽度）
+function getClientWH(selecter){
+	var width = $(selecter)[0].clientWidth;
+	var height = $(selecter)[0].clientWidth;
+
+  console.log('clientWidth:'+ width);
+  console.log('clientHeight:'+ height);
+	return {'width': width, 'height': height};
+}
+
+// 获取容器宽高 + border宽度
+function getOffsetWH(selecter){
+	var width = $(selecter)[0].offsetWidth;
+	var height = $(selecter)[0].offsetWidth;
+
+  console.log('offsetWidth:'+ width);
+  console.log('offsetHeight:'+ height);
+	return {'width': width, 'height': height};
+}
+
+		</script>
+	</body>
+</html>

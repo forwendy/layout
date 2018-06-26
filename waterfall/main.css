@@ -1,0 +1,16 @@
+.container{
+	overflow: hidden;
+	margin: 0 auto;
+}
+.column{
+	float: left;
+}
+.panel{
+	width: 180px; /* 可配置 */
+	padding: 10px;
+}
+.panel img{
+	width: 100%;
+	height: auto;
+	display: block;
+}
