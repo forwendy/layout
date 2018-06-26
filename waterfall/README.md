@@ -37,6 +37,7 @@
     };
 
 ###浏览器兼容性
+
     document.documentElement.scrollTop||document.body.scrollTop
 
 ### querySelectorAll 与 getElementBy* 
