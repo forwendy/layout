@@ -50,7 +50,7 @@ var waterFall = (function() {
 	// todo
 	// 1、.panel模板解析
 	// 2、ajax获取图片数据
-	//
+	// 3、控制事件触发频率
 
 	// 列的高度
 	var arrHeight = [];
